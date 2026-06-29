@@ -31,6 +31,13 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                    docker build -t ${IMAGE_NAME}:${TAG} .
+                '''
+            }
+        }
         stage('Trivy Scan') {
             steps {
                 sh '''
@@ -40,13 +47,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh '''
-                    docker build -t ${IMAGE_NAME}:${TAG} .
-                '''
-            }
-        }
 
         stage('Push Docker Image') {
             steps {
