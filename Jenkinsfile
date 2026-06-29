@@ -5,7 +5,9 @@ pipeline {
         IMAGE_NAME = "pranavjambare/java-k8s-app"
         TAG = "${BUILD_NUMBER}"
     }
-
+    tools {
+    	maven "Maven-3"
+    }	
 
     stages {
 
