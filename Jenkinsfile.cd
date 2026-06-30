@@ -1,0 +1,66 @@
+pipeline {
+    agent any
+
+    environment {
+        KUBECONFIG = "/Users/learnwithpranav/.kube/config"
+        IMAGE = "pranavjambare/java-k8s-app:latest"
+        PATH = "/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
+    }
+
+    stages {
+
+        stage('Verify Cluster') {
+            steps {
+                sh '''
+                kubectl cluster-info
+                kubectl get nodes
+                '''
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                sh '''
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
+                '''
+            }
+        }
+
+        stage('Update Image') {
+            steps {
+                sh '''
+                kubectl set image deployment/java-k8s-app \
+                    java-k8s-app=${IMAGE}
+                '''
+            }
+        }
+
+        stage('Wait for Rollout') {
+            steps {
+                sh '''
+                kubectl rollout status deployment/java-k8s-app --timeout=120s
+                '''
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh '''
+                kubectl get pods
+                kubectl get svc
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment completed successfully.'
+        }
+
+        failure {
+            echo 'Deployment failed.'
+        }
+    }
+}

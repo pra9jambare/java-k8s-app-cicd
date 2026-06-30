@@ -2,18 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: java-k8s-app
+
 spec:
   replicas: 2
+
   selector:
     matchLabels:
       app: java-k8s-app
+
   template:
     metadata:
       labels:
         app: java-k8s-app
+
     spec:
       containers:
-        - name: java-k8s-app
-          image: your-dockerhub-username/java-k8s-app:latest
-          ports:
-            - containerPort: 8080
+      - name: java-k8s-app
+        image: pranavjambare/java-k8s-app:latest
+
+        ports:
+        - containerPort: 8080
