@@ -6,6 +6,9 @@ pipeline {
         IMAGE = "pranavjambare/java-k8s-app:latest"
         PATH = "/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
     }
+    parameters {
+        string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Docker image tag to deploy')
+    }
 
     stages {
 
