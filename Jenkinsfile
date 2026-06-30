@@ -97,7 +97,7 @@ pipeline {
         }
 
         failure {
-            echo "Pipeline FAILED"
+            echo "Pipeline is FAILED"
         }
 
         always {
