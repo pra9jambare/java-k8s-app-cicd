@@ -6,6 +6,12 @@ metadata:
 spec:
   replicas: 5
 
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
   selector:
     matchLabels:
       app: java-k8s-app
